@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const units = [
   { id: 0, unit: "szt." },
   { id: 2, unit: "opak." },
@@ -7,11 +9,37 @@ const units = [
 ];
 
 export default function App() {
+  const [shoppingItems, setShoppinhItems] = useState([]);
+
+  function handleAddItems(shoppingItem) {
+    setShoppinhItems((shoppingItems) => [...shoppingItems, shoppingItem]);
+  }
+
+  function handleDelateItem(id) {
+    setShoppinhItems((shoppingItems) =>
+      shoppingItems.filter((item) => item.id !== id)
+    );
+  }
+
+  function handleToggleItem(id) {
+    setShoppinhItems((shoppingItems) =>
+      shoppingItems.map((shoppingItem) =>
+        shoppingItem.id === id
+          ? { ...shoppingItem, basket: !shoppingItem.basket }
+          : shoppingItem
+      )
+    );
+  }
+
   return (
     <div className="app">
       <Logo />
-      <AddItemForm />
-      <ShoppingList />
+      <AddItemForm onAddShoppingItem={handleAddItems} />
+      <ShoppingList
+        shoppingItems={shoppingItems}
+        onDelateShoppingItem={handleDelateItem}
+        onToggleShoppingItem={handleToggleItem}
+      />
     </div>
   );
 }
@@ -26,12 +54,40 @@ function Logo() {
   );
 }
 
-function AddItemForm() {
+function AddItemForm({ onAddShoppingItem }) {
+  const [product, setProduct] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [unit, setUnit] = useState("szt.");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (!product || !quantity) return;
+
+    const id = crypto.randomUUID();
+    const newShoppingItem = { id, product, quantity, unit, basket: false };
+    setProduct("");
+    setQuantity("");
+    setUnit("szt.");
+    onAddShoppingItem(newShoppingItem);
+  }
+
   return (
-    <form className="add_item">
-      <input className="add_item__product" type="text" placeholder="Produkt" />
-      <input className="add_item__quantity" type="text" placeholder="Ilość" />
-      <select>
+    <form className="add_item" onSubmit={handleSubmit}>
+      <input
+        className="add_item__product"
+        type="text"
+        placeholder="Produkt"
+        value={product}
+        onChange={(e) => setProduct(e.target.value)}
+      />
+      <input
+        className="add_item__quantity"
+        type="text"
+        placeholder="Ilość"
+        value={quantity}
+        onChange={(e) => setQuantity(e.target.value)}
+      />
+      <select value={unit} onChange={(e) => setUnit(e.target.value)}>
         {units.map((el) => (
           <option key={el.id}>{el.unit}</option>
         ))}
@@ -41,34 +97,45 @@ function AddItemForm() {
   );
 }
 
-function ShoppingItem() {
-  return (
-    <li className="shopping-item">
-      <button className="shopping-item__mark">✔️</button>
-      <button>🛒</button>
-      <span>Pomiodry: 2 szt.</span>
-      <button>❌</button>
-    </li>
-  );
-}
-
-function ShoppingList() {
+function ShoppingList({
+  shoppingItems,
+  onDelateShoppingItem,
+  onToggleShoppingItem,
+}) {
   return (
     <div className="shopping-list">
       <ul>
-        <ShoppingItem />
-        <ShoppingItem />
-        <ShoppingItem />
-        <ShoppingItem />
-        <ShoppingItem />
-        <ShoppingItem />
-        <ShoppingItem />
-        <ShoppingItem />
-        <ShoppingItem />
-        <ShoppingItem />
-        <ShoppingItem />
-        <ShoppingItem />
+        {shoppingItems.map((shoppingItem) => (
+          <ShoppingItem
+            shoppingItem={shoppingItem}
+            key={shoppingItem.id}
+            onDelateShoppingItem={onDelateShoppingItem}
+            onToggleShoppingItem={onToggleShoppingItem}
+          />
+        ))}
       </ul>
     </div>
+  );
+}
+
+function ShoppingItem({
+  shoppingItem,
+  onDelateShoppingItem,
+  onToggleShoppingItem,
+}) {
+  return (
+    <li className="shopping-item">
+      <button onClick={() => onToggleShoppingItem(shoppingItem.id)}>
+        <span className="shopping-item__mark">
+          {shoppingItem.basket ? "✔️" : "🛒"}
+        </span>
+      </button>
+      <span
+        style={shoppingItem.basket ? { textDecoration: "line-through" } : {}}
+      >{`${shoppingItem.product}: ${shoppingItem.quantity} ${shoppingItem.unit}`}</span>
+      <button onClick={() => onDelateShoppingItem(shoppingItem.id)}>
+        <span className="shopping-item__close">❌</span>
+      </button>
+    </li>
   );
 }

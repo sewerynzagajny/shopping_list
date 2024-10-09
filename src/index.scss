@@ -16,6 +16,7 @@ $background-color-amber-2: #dd851f;
 $background-color-amber-dark: #92400e;
 $color-black: #000;
 
+///////////////////////////////////////////////////////////////////
 * {
   margin: 0;
   padding: 0;
@@ -33,6 +34,21 @@ body {
   font-weight: $font-weight-primary;
   background-color: $background-color-primary;
   // letter-spacing: $letter-spacing;
+}
+
+/////////////////////////////////////////////////////////////////////
+
+%common-input-styles {
+  background-color: $background-color-primary;
+  color: #292524;
+  border: none;
+  border-radius: 10rem;
+  font-family: inherit;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 1.2rem 2.4rem;
+  font-size: 1.8rem;
+  transition: all 0.3s;
 }
 
 ////////////////////////////////////////////////////////////
@@ -64,18 +80,6 @@ body {
   &__img {
     width: 15%;
   }
-}
-%common-input-styles {
-  background-color: $background-color-primary;
-  color: #292524;
-  border: none;
-  border-radius: 10rem;
-  font-family: inherit;
-  cursor: pointer;
-  font-weight: 700;
-  padding: 1.2rem 2.4rem;
-  font-size: 1.8rem;
-  transition: all 0.3s;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -150,7 +154,7 @@ body {
     flex-direction: column;
     gap: 1.2rem;
     list-style: none;
-    align-items: center;
+    // align-items: center;
   }
 }
 //////////////////////////////////////////////////////////////////
@@ -158,18 +162,20 @@ body {
 
 .shopping-item {
   display: flex;
+  justify-content: space-between;
   gap: 1.8rem;
   font-weight: 600;
+  padding: 0 8rem;
 
   & button {
     cursor: pointer;
     background: none;
     border: none;
-    font-size: 2rem;
-    // padding: 0.8rem;
-    // transform: translateY(2px);
   }
   &__mark {
-    transform: translateY(-3px);
+    font-size: 2.4rem;
+  }
+  &__close {
+    font-size: 2rem;
   }
 }
