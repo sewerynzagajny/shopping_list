@@ -1,13 +1,175 @@
-body {
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Chewy&display=swap");
+
+// FONT VARIABLES
+$font-primary: "Open Sans", sans-serif;
+$font-size-primary: 2.4rem;
+$font-weight-primary: 500;
+$letter-spacing: 1px;
+
+// COLLORS
+$font-color-primary: #292524;
+$background-color-primary: #ffedd5;
+$background-color-orange: #fed7aa;
+$background-color-amber: #d97706;
+$background-color-amber-2: #dd851f;
+$background-color-amber-dark: #92400e;
+$color-black: #000;
+
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: $font-size-primary;
+  font-family: $font-primary;
+  color: $font-color-primary;
+  font-weight: $font-weight-primary;
+  background-color: $background-color-primary;
+  // letter-spacing: $letter-spacing;
+}
+
+////////////////////////////////////////////////////////////
+///
+.app {
+  max-width: 80rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+}
+
+/////////////////////////////////////////////////////////////////////
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $background-color-amber;
+
+  &__heading-primary {
+    text-align: center;
+    font-family: "Chewy", system-ui;
+    letter-spacing: 4px;
+    word-spacing: 6px;
+    font-size: 6.4rem;
+    padding: 3.2rem 0;
+    color: $background-color-primary;
+  }
+
+  &__img {
+    width: 15%;
+  }
+}
+%common-input-styles {
+  background-color: $background-color-primary;
+  color: #292524;
+  border: none;
+  border-radius: 10rem;
+  font-family: inherit;
+  cursor: pointer;
+  font-weight: 700;
+  padding: 1.2rem 2.4rem;
+  font-size: 1.8rem;
+  transition: all 0.3s;
+}
+
+/////////////////////////////////////////////////////////////////////
+.add_item {
+  background-color: $background-color-amber-dark;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.8rem;
+  padding: 3.6rem 0;
+
+  & input {
+    @extend %common-input-styles;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: $background-color-orange;
+    }
+  }
+
+  & select {
+    @extend %common-input-styles;
+
+    &:hover,
+    &:active {
+      background-color: $background-color-orange;
+    }
+  }
+
+  &__quantity,
+  &__select {
+    width: 16%;
+  }
+
+  &__product {
+    width: 30%;
+  }
+
+  & button {
+    @extend %common-input-styles;
+
+    width: 18%;
+    background-color: $background-color-amber;
+    color: $background-color-primary;
+    box-shadow: 0 1rem 2rem rgba($color-black, 0.2);
+
+    &:hover {
+      background-color: $background-color-amber-2;
+    }
+    &:active,
+    &:focus {
+      transform: translateY(0.1rem);
+      box-shadow: 0 0.5rem 1rem rgba($color-black, 0.2);
+    }
+  }
+}
+
+/////////////////////////////////////////////////////////////////////
+
+.shopping-list {
+  background-color: $background-color-orange;
+  color: $font-color-primary;
+  padding: 3rem 2rem;
+
+  height: 30rem;
+  overflow: scroll;
+  overflow-x: hidden;
+
+  & ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    list-style: none;
+    align-items: center;
+  }
+}
+//////////////////////////////////////////////////////////////////
+///
+
+.shopping-item {
+  display: flex;
+  gap: 1.8rem;
+  font-weight: 600;
+
+  & button {
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    // padding: 0.8rem;
+    // transform: translateY(2px);
+  }
+  &__mark {
+    transform: translateY(-3px);
+  }
 }
