@@ -213,7 +213,7 @@ function Stats({ shoppingItems }) {
   if (!shoppingItems.length)
     return (
       <div className="stats">
-        <en>Dodaj produkty do listy zakupów 📋</en>
+        <span>Dodaj produkty do listy zakupów 📋</span>
       </div>
     );
   const numShoppingItems = shoppingItems.length;
@@ -236,11 +236,11 @@ function Stats({ shoppingItems }) {
 
   return (
     <div className="stats">
-      <em>
+      <span>
         {percentage === 100
           ? "Masz wszystko z listy 💪"
           : `Masz ${numShoppingItems} ${productStr}, z czego ${numInBasket} ${markStr} (${percentage}%) 🛍️`}
-      </em>
+      </span>
     </div>
   );
 }

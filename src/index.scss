@@ -16,6 +16,11 @@ $background-color-amber-2: #dd851f;
 $background-color-amber-dark: #92400e;
 $color-black: #000;
 
+///Querias
+$bp-medium: 42em; //672px
+$bp-small: 32em; //512px
+$bp-smaller: 29em; //464px
+$bp-smallest: 22em; //352px
 ///////////////////////////////////////////////////////////////////
 * {
   margin: 0;
@@ -25,6 +30,20 @@ $color-black: #000;
 
 html {
   font-size: 62.5%;
+
+  @media only screen and (max-width: $bp-medium) {
+    font-size: 50%;
+  }
+
+  @media only screen and (max-width: $bp-small) {
+    font-size: 45%;
+  }
+  @media only screen and (max-width: $bp-smaller) {
+    font-size: 35%;
+  }
+  @media only screen and (max-width: $bp-smallest) {
+    font-size: 30%;
+  }
 }
 
 body {
@@ -49,6 +68,10 @@ body {
   padding: 1.2rem 2.4rem;
   font-size: 1.8rem;
   transition: all 0.3s;
+
+  @media only screen and (max-width: $bp-smaller) {
+    padding: 0.6rem 1.2rem;
+  }
 }
 
 //////////////////////////////////////////////////////////////////
@@ -78,6 +101,10 @@ body {
   display: grid;
   grid-template-rows: auto auto 1fr auto;
   height: 100vb;
+
+  @media only screen and (max-width: $bp-medium) {
+    max-width: 120rem;
+  }
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -95,6 +122,10 @@ body {
     font-size: 6.4rem;
     padding: 3.2rem 0;
     color: $background-color-primary;
+
+    @media only screen and (max-width: $bp-smaller) {
+      font-size: 4.6rem;
+    }
   }
 
   &__img {
@@ -145,22 +176,21 @@ body {
 .shopping-items {
   background-color: $background-color-orange;
   color: $font-color-primary;
+  display: flex;
+  flex-direction: column;
 
   &__shopping-list {
     padding: 3rem 2rem;
-
-    // height: 25rem;
     overflow: scroll;
     overflow-x: hidden;
     display: grid;
-    grid-template-rows: repeat(auto-fit, minmax(18rem, 1fr));
+    flex: 1;
 
     & ul {
       display: flex;
       flex-direction: column;
       gap: 1.2rem;
       list-style: none;
-      // align-items: center;
     }
   }
 
@@ -186,6 +216,10 @@ body {
   gap: 1.8rem;
   font-weight: 600;
   padding: 0 8rem;
+
+  @media only screen and (max-width: $bp-medium) {
+    padding: 0 5rem;
+  }
 
   & button {
     cursor: pointer;
