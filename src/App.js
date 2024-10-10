@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEffect } from "react";
 
 const units = [
   { id: 0, unit: "szt." },
@@ -14,8 +15,29 @@ const filtring = [
   { id: 2, value: "bascet", description: "W koszyku" },
 ];
 
+function Button({ onClick, children, style }) {
+  return (
+    <button style={style} onClick={onClick} className="button">
+      {children}
+    </button>
+  );
+}
+
 export default function App() {
   const [shoppingItems, setShoppingItems] = useState([]);
+
+  useEffect(() => {
+    const savedItems = JSON.parse(localStorage.getItem("shoppingItems"));
+    if (savedItems) setShoppingItems(savedItems);
+  }, []);
+
+  useEffect(() => {
+    if (shoppingItems.length > 0) {
+      localStorage.setItem("shoppingItems", JSON.stringify(shoppingItems));
+    } else {
+      localStorage.removeItem("shoppingItems");
+    }
+  }, [shoppingItems]);
 
   function handleAddItems(shoppingItem) {
     setShoppingItems((shoppingItems) => [...shoppingItems, shoppingItem]);
@@ -110,7 +132,7 @@ function AddItemForm({ onAddShoppingItem }) {
           <option key={el.id}>{el.unit}</option>
         ))}
       </select>
-      <button>Dodaj</button>
+      <Button style={{ width: "18%" }}>Dodaj</Button>
     </form>
   );
 }
@@ -155,7 +177,7 @@ function ShoppingList({
             </option>
           ))}
         </select>
-        <button onClick={onClearList}>Nowa lista</button>
+        <Button onClick={onClearList}>Nowa lista</Button>
       </div>
     </div>
   );

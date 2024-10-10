@@ -51,6 +51,25 @@ body {
   transition: all 0.3s;
 }
 
+//////////////////////////////////////////////////////////////////
+///
+
+.button {
+  @extend %common-input-styles;
+
+  background-color: $background-color-amber;
+  color: $background-color-primary;
+  box-shadow: 0 1rem 2rem rgba($color-black, 0.2);
+
+  &:hover {
+    background-color: $background-color-amber-2;
+  }
+  &:active {
+    transform: translateY(0.1rem);
+    box-shadow: 0 0.5rem 1rem rgba($color-black, 0.2);
+  }
+}
+
 ////////////////////////////////////////////////////////////
 ///
 .app {
@@ -119,23 +138,6 @@ body {
   &__product {
     width: 30%;
   }
-
-  & button {
-    @extend %common-input-styles;
-
-    width: 18%;
-    background-color: $background-color-amber;
-    color: $background-color-primary;
-    box-shadow: 0 1rem 2rem rgba($color-black, 0.2);
-
-    &:hover {
-      background-color: $background-color-amber-2;
-    }
-    &:active {
-      transform: translateY(0.1rem);
-      box-shadow: 0 0.5rem 1rem rgba($color-black, 0.2);
-    }
-  }
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -171,21 +173,6 @@ body {
       @extend %common-input-styles;
       background-color: $background-color-amber;
       color: $background-color-primary;
-    }
-    & button {
-      @extend %common-input-styles;
-
-      background-color: $background-color-amber;
-      color: $background-color-primary;
-      box-shadow: 0 1rem 2rem rgba($color-black, 0.2);
-
-      &:hover {
-        background-color: $background-color-amber-2;
-      }
-      &:active {
-        transform: translateY(0.1rem);
-        box-shadow: 0 0.5rem 1rem rgba($color-black, 0.2);
-      }
     }
   }
 }
