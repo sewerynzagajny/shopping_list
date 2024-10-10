@@ -122,7 +122,7 @@ function AddItemForm({ onAddShoppingItem }) {
       />
       <input
         className="add_item__quantity"
-        type="text"
+        type="number"
         placeholder="Ilość"
         value={quantity}
         onChange={(e) => setQuantity(e.target.value)}
@@ -250,7 +250,8 @@ function Footer() {
     <footer>
       <p className="copyright">
         Copyright &copy; <span>{new Date().getFullYear()}</span> by Seweryn
-        Zagajny. All rights reserved.
+        Zagajny. <br />
+        All rights reserved.
       </p>
     </footer>
   );
