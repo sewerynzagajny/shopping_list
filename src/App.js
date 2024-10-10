@@ -8,27 +8,40 @@ const units = [
   { id: 5, unit: "kg" },
 ];
 
+const filtring = [
+  { id: 0, value: "main", description: "Pokaż całą listę" },
+  { id: 1, value: "add", description: "Poza koszykiem" },
+  { id: 2, value: "bascet", description: "W koszyku" },
+];
+
 export default function App() {
-  const [shoppingItems, setShoppinhItems] = useState([]);
+  const [shoppingItems, setShoppingItems] = useState([]);
 
   function handleAddItems(shoppingItem) {
-    setShoppinhItems((shoppingItems) => [...shoppingItems, shoppingItem]);
+    setShoppingItems((shoppingItems) => [...shoppingItems, shoppingItem]);
   }
 
   function handleDelateItem(id) {
-    setShoppinhItems((shoppingItems) =>
+    setShoppingItems((shoppingItems) =>
       shoppingItems.filter((item) => item.id !== id)
     );
   }
 
   function handleToggleItem(id) {
-    setShoppinhItems((shoppingItems) =>
+    setShoppingItems((shoppingItems) =>
       shoppingItems.map((shoppingItem) =>
         shoppingItem.id === id
           ? { ...shoppingItem, basket: !shoppingItem.basket }
           : shoppingItem
       )
     );
+  }
+
+  function handleClearList() {
+    const confirmed = window.confirm(
+      "Nowa lista spowoduje usunięcie aktualnej!"
+    );
+    if (confirmed) setShoppingItems([]);
   }
 
   return (
@@ -39,7 +52,10 @@ export default function App() {
         shoppingItems={shoppingItems}
         onDelateShoppingItem={handleDelateItem}
         onToggleShoppingItem={handleToggleItem}
+        onClearList={handleClearList}
       />
+      <Stats shoppingItems={shoppingItems} />
+      <Footer />
     </div>
   );
 }
@@ -61,10 +77,12 @@ function AddItemForm({ onAddShoppingItem }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!product || !quantity) return;
+    if (!product) return;
 
     const id = crypto.randomUUID();
-    const newShoppingItem = { id, product, quantity, unit, basket: false };
+    const newShoppingItem = quantity
+      ? { id, product, quantity, unit, basket: false }
+      : { id, product, basket: false };
     setProduct("");
     setQuantity("");
     setUnit("szt.");
@@ -101,19 +119,44 @@ function ShoppingList({
   shoppingItems,
   onDelateShoppingItem,
   onToggleShoppingItem,
+  onClearList,
 }) {
+  const [filterBy, setFilterBy] = useState("main");
+  let filtredShoppingItems;
+  if (filterBy === "main") filtredShoppingItems = shoppingItems;
+  if (filterBy === "add")
+    filtredShoppingItems = shoppingItems.filter(
+      (shoppingItem) => !shoppingItem.basket
+    );
+  if (filterBy === "bascet")
+    filtredShoppingItems = shoppingItems.filter(
+      (shoppingItem) => shoppingItem.basket
+    );
   return (
-    <div className="shopping-list">
-      <ul>
-        {shoppingItems.map((shoppingItem) => (
-          <ShoppingItem
-            shoppingItem={shoppingItem}
-            key={shoppingItem.id}
-            onDelateShoppingItem={onDelateShoppingItem}
-            onToggleShoppingItem={onToggleShoppingItem}
-          />
-        ))}
-      </ul>
+    <div className="shopping-items">
+      {" "}
+      <div className="shopping-items__shopping-list">
+        <ul>
+          {filtredShoppingItems.map((shoppingItem) => (
+            <ShoppingItem
+              shoppingItem={shoppingItem}
+              key={shoppingItem.id}
+              onDelateShoppingItem={onDelateShoppingItem}
+              onToggleShoppingItem={onToggleShoppingItem}
+            />
+          ))}
+        </ul>
+      </div>
+      <div className="shopping-items__action">
+        <select value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
+          {filtring.map((el) => (
+            <option key={el.id} value={el.value}>
+              {el.description}
+            </option>
+          ))}
+        </select>
+        <button onClick={onClearList}>Nowa lista</button>
+      </div>
     </div>
   );
 }
@@ -132,10 +175,61 @@ function ShoppingItem({
       </button>
       <span
         style={shoppingItem.basket ? { textDecoration: "line-through" } : {}}
-      >{`${shoppingItem.product}: ${shoppingItem.quantity} ${shoppingItem.unit}`}</span>
+      >
+        {shoppingItem.quantity
+          ? `${shoppingItem.product}: ${shoppingItem.quantity} ${shoppingItem.unit}`
+          : `${shoppingItem.product}`}
+      </span>
       <button onClick={() => onDelateShoppingItem(shoppingItem.id)}>
         <span className="shopping-item__close">❌</span>
       </button>
     </li>
+  );
+}
+
+function Stats({ shoppingItems }) {
+  if (!shoppingItems.length)
+    return (
+      <div className="stats">
+        <en>Dodaj produkty do listy zakupów 📋</en>
+      </div>
+    );
+  const numShoppingItems = shoppingItems.length;
+  const numInBasket = shoppingItems.filter(
+    (shoppingItem) => shoppingItem.basket
+  ).length;
+  const percentage =
+    numShoppingItems > 0
+      ? Math.round((numInBasket / numShoppingItems) * 100)
+      : 0;
+  let productStr,
+    markStr = "";
+  if (numShoppingItems === 1) productStr = "produkt";
+  if (numShoppingItems > 1 && numShoppingItems < 5) productStr = "produkty";
+  if (numShoppingItems >= 5) productStr = "produktów";
+
+  if (numInBasket === 0 || numInBasket > 4) markStr = "odznaczonych";
+  if (numInBasket === 1) markStr = "odznaczony";
+  if (numInBasket > 1 && numInBasket < 5) markStr = "odznaczone";
+
+  return (
+    <div className="stats">
+      <em>
+        {percentage === 100
+          ? "Masz wszystko z listy 💪"
+          : `Masz ${numShoppingItems} ${productStr}, z czego ${numInBasket} ${markStr} (${percentage}%) 🛍️`}
+      </em>
+    </div>
+  );
+}
+
+function Footer() {
+  return (
+    <footer>
+      <p className="copyright">
+        Copyright &copy; <span>{new Date().getFullYear()}</span> by Seweryn
+        Zagajny. All rights reserved.
+      </p>
+    </footer>
   );
 }

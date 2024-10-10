@@ -58,6 +58,7 @@ body {
   margin: 0 auto;
   display: grid;
   grid-template-rows: auto auto 1fr auto;
+  height: 100vb;
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -130,8 +131,7 @@ body {
     &:hover {
       background-color: $background-color-amber-2;
     }
-    &:active,
-    &:focus {
+    &:active {
       transform: translateY(0.1rem);
       box-shadow: 0 0.5rem 1rem rgba($color-black, 0.2);
     }
@@ -140,23 +140,56 @@ body {
 
 /////////////////////////////////////////////////////////////////////
 
-.shopping-list {
+.shopping-items {
   background-color: $background-color-orange;
   color: $font-color-primary;
-  padding: 3rem 2rem;
 
-  height: 30rem;
-  overflow: scroll;
-  overflow-x: hidden;
+  &__shopping-list {
+    padding: 3rem 2rem;
 
-  & ul {
+    // height: 25rem;
+    overflow: scroll;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(18rem, 1fr));
+
+    & ul {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      list-style: none;
+      // align-items: center;
+    }
+  }
+
+  &__action {
+    padding: 1.8rem 0;
     display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    list-style: none;
-    // align-items: center;
+    gap: 1.8rem;
+    justify-content: center;
+    & select {
+      @extend %common-input-styles;
+      background-color: $background-color-amber;
+      color: $background-color-primary;
+    }
+    & button {
+      @extend %common-input-styles;
+
+      background-color: $background-color-amber;
+      color: $background-color-primary;
+      box-shadow: 0 1rem 2rem rgba($color-black, 0.2);
+
+      &:hover {
+        background-color: $background-color-amber-2;
+      }
+      &:active {
+        transform: translateY(0.1rem);
+        box-shadow: 0 0.5rem 1rem rgba($color-black, 0.2);
+      }
+    }
   }
 }
+
 //////////////////////////////////////////////////////////////////
 ///
 
@@ -178,4 +211,23 @@ body {
   &__close {
     font-size: 2rem;
   }
+}
+
+/////////////////////////////////////////////////////////////////////
+.stats {
+  text-align: center;
+  font-weight: 600;
+  padding: 2.4rem 0;
+  background-color: $background-color-amber-dark;
+  color: $background-color-primary;
+}
+
+/////////////////////////////////////////////////////////////////////
+.copyright {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 1.2rem 0;
+  background-color: $background-color-amber;
+  color: $background-color-primary;
+  font-weight: 700;
 }
